@@ -2,32 +2,16 @@
 namespace Robo\Task\File;
 
 use Robo\Collection\Temporary;
-use Robo\Container\SimpleServiceProvider;
 
 trait loadTasks
 {
-    /**
-     * Return services.
-     */
-    public static function getFileServices()
-    {
-        return new SimpleServiceProvider(
-            [
-                'taskConcat' => Concat::class,
-                'taskReplaceInFile' => Replace::class,
-                'taskWriteToFile' => Write::class,
-                'taskTmpFile' => TmpFile::class,
-            ]
-        );
-    }
-
     /**
      * @param $files
      * @return Concat
      */
     protected function taskConcat($files)
     {
-        return $this->task(__FUNCTION__, $files);
+        return new Concat($files);
     }
 
     /**
@@ -36,7 +20,7 @@ trait loadTasks
      */
     protected function taskReplaceInFile($file)
     {
-        return $this->task(__FUNCTION__, $file);
+        return new Replace($file);
     }
 
     /**
@@ -45,7 +29,17 @@ trait loadTasks
      */
     protected function taskWriteToFile($file)
     {
-        return $this->task(__FUNCTION__, $file);
+        return new Write($file);
+    }
+
+    protected function taskReadFile($file)
+    {
+        return new Read($file);
+    }
+
+    protected function taskCheckMd5($file)
+    {
+        return new MD5($file);
     }
 
     /**
@@ -56,6 +50,6 @@ trait loadTasks
      */
     protected function taskTmpFile($filename = 'tmp', $extension = '', $baseDir = '', $includeRandomPart = true)
     {
-        return $this->task(__FUNCTION__, $filename, $extension, $baseDir, $includeRandomPart);
+        return Temporary::wrap(new TmpFile($filename, $extension, $baseDir, $includeRandomPart));
     }
 }
