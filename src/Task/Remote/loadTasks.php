@@ -1,7 +1,7 @@
 <?php
 namespace Robo\Task\Remote;
 
-trait loadTasks 
+trait loadTasks
 {
     /**
      * @return Rsync
@@ -21,4 +21,8 @@ trait loadTasks
         return new Ssh($hostname, $user);
     }
 
-} 
+    protected function taskWget()
+    {
+        return new Wget();
+    }
+}

@@ -32,6 +32,16 @@ trait loadTasks
         return new Write($file);
     }
 
+    protected function taskReadFile($file)
+    {
+        return new Read($file);
+    }
+
+    protected function taskCheckMd5($file)
+    {
+        return new MD5($file);
+    }
+
     /**
      * @param $prefix
      * @param $base

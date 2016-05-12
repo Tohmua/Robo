@@ -39,6 +39,9 @@ class Tasks
     use Task\FileSystem\loadShortcuts;
     use Task\Vcs\loadShortcuts;
 
+    // comparison
+    use Task\Comparison\loadTasks;
+
     use IO;
 
     protected function stopOnFail($stopOnFail = true)
