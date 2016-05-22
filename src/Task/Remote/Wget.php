@@ -1151,9 +1151,112 @@ class Wget extends BaseTask
         return $this;
     }
 
-    // /**
-    //  * Directory Options
-    //  */
+    /**
+     * Directory Options
+     */
+
+    /**
+     * Do not create a hierarchy of directories when retrieving recursively.  With this option turned on, all files will
+     * get saved to the current directory, without clobbering (if a name shows up more than once, the filenames will get
+     * extensions .n).
+     *
+     * @return Wget
+     */
+    public function noDirectories()
+    {
+        $this->option('-nd');
+
+        return $this;
+    }
+
+    /**
+     * The opposite of -nd---create a hierarchy of directories, even if one would not have been created otherwise.
+     * E.g. wget -x http://fly.srk.fer.hr/robots.txt will save the downloaded file to fly.srk.fer.hr/robots.txt.
+     *
+     * @return Wget
+     */
+    public function forceDirectories()
+    {
+        $this->option('-x');
+
+        return $this;
+    }
+
+    /**
+     * Disable generation of host-prefixed directories.  By default, invoking Wget with -r http://fly.srk.fer.hr/ will
+     * create a structure of directories beginning with fly.srk.fer.hr/.  This option disables such behavior.
+     *
+     * @return Wget
+     */
+    public function noHostDirectories()
+    {
+        $this->option('-nH');
+
+        return $this;
+    }
+
+    /**
+     * Use the protocol name as a directory component of local file names.  For example, with this option,
+     * wget -r http://host will save to http/host/... rather than just to host/....
+     *
+     * @return Wget
+     */
+    public function protocolDirectories()
+    {
+        $this->option('--protocol-directories');
+
+        return $this;
+    }
+
+    /**
+     * Ignore number directory components.  This is useful for getting a fine-grained control over the directory where
+     * recursive retrieval will be saved.
+     *
+     * Take, for example, the directory at ftp://ftp.xemacs.org/pub/xemacs/.  If you retrieve it with -r, it will be
+     * saved locally under ftp.xemacs.org/pub/xemacs/.  While the -nH option can remove the ftp.xemacs.org/ part, you
+     * are still stuck with pub/xemacs.  This is where --cut-dirs comes in handy; it makes Wget not "see" number remote
+     * directory components.  Here are several examples of how --cut-dirs option works.
+     *
+     * No options        -> ftp.xemacs.org/pub/xemacs/
+     * -nH               -> pub/xemacs/
+     * -nH --cut-dirs=1  -> xemacs/
+     * -nH --cut-dirs=2  -> .
+     * --cut-dirs=1      -> ftp.xemacs.org/xemacs/
+     * ...
+     *
+     * If you just want to get rid of the directory structure, this option is similar to a combination of -nd and -P.
+     * However, unlike -nd, --cut-dirs does not lose with subdirectories---for instance, with -nH --cut-dirs=1, a beta/
+     * subdirectory will be placed to xemacs/beta, as one would expect.
+     *
+     * @return Wget
+     */
+    public function cutDirs($number)
+    {
+        if (!is_int($number)) {
+            throw new TaskException($this, 'Number must be an integer');
+        }
+
+        $this->option(sprintf('--cut-dirs=%d', $number));
+
+        return $this;
+    }
+
+    /**
+     * Set directory prefix to prefix.  The directory prefix is the directory where all other files and subdirectories
+     * will be saved to, i.e. the top of the retrieval tree.  The default is . (the current directory).
+     *
+     * @return Wget
+     */
+    public function directoryPrefix($prefix)
+    {
+        if (!is_string($prefix)) {
+            throw new TaskException($this, 'Prefix must be a string');
+        }
+
+        $this->option('-P', $prefix);
+
+        return $this;
+    }
 
     /**
      * @return \Robo\Result

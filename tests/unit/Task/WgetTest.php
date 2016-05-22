@@ -10,6 +10,8 @@ use Robo\Task\Remote\InputType\MegabytesFileSize;
 use Robo\Task\Remote\InputType\MinutesTime;
 use Robo\Task\Remote\InputType\SecondsTime;
 
+ini_set('memory_limit', '64M');
+
 class WgetTest extends \Codeception\TestCase\Test
 {
     protected $container;
@@ -1190,5 +1192,125 @@ class WgetTest extends \Codeception\TestCase\Test
                             ->unlink()
                             ->getCommand()
         )->equals("wget http://fly.srk.fer.hr/ --unlink");
+    }
+
+    public function testNoDirectoriesCommand()
+    {
+        verify(
+            $this->container->get('taskWget', ['http://fly.srk.fer.hr/'])
+                            ->noDirectories()
+                            ->getCommand()
+        )->equals("wget http://fly.srk.fer.hr/ -nd");
+    }
+
+    public function testForceDirectoriesCommand()
+    {
+        verify(
+            $this->container->get('taskWget', ['http://fly.srk.fer.hr/'])
+                            ->forceDirectories()
+                            ->getCommand()
+        )->equals("wget http://fly.srk.fer.hr/ -x");
+    }
+
+    public function testNoHostDirectoriesCommand()
+    {
+        verify(
+            $this->container->get('taskWget', ['http://fly.srk.fer.hr/'])
+                            ->noHostDirectories()
+                            ->getCommand()
+        )->equals("wget http://fly.srk.fer.hr/ -nH");
+    }
+
+    public function testProtocolDirectoriesCommand()
+    {
+        verify(
+            $this->container->get('taskWget', ['http://fly.srk.fer.hr/'])
+                            ->protocolDirectories()
+                            ->getCommand()
+        )->equals("wget http://fly.srk.fer.hr/ --protocol-directories");
+    }
+
+    public function testCutDirsCommand()
+    {
+        \PHPUnit_Framework_TestCase::setExpectedException('PHPUnit_Framework_Exception');
+
+        $this->container->get('taskWget', ['http://fly.srk.fer.hr/'])
+                        ->cutDirs()
+                        ->getCommand();
+    }
+
+    public function testCutDirsCommandWithInt()
+    {
+        verify(
+            $this->container->get('taskWget', ['http://fly.srk.fer.hr/'])
+                            ->cutDirs(10)
+                            ->getCommand()
+        )->equals("wget http://fly.srk.fer.hr/ --cut-dirs=10");
+    }
+
+    public function testCutDirsCommandRejectsString()
+    {
+        \PHPUnit_Framework_TestCase::setExpectedException(
+            'Robo\Exception\TaskException',
+            'Number must be an integer'
+        );
+
+        $this->container->get('taskWget')
+                        ->cutDirs('foo')
+                        ->getCommand();
+    }
+
+    public function testCutDirsCommandRejectsObject()
+    {
+        \PHPUnit_Framework_TestCase::setExpectedException(
+            'Robo\Exception\TaskException',
+            'Number must be an integer'
+        );
+
+        $this->container->get('taskWget')
+                        ->cutDirs(new \StdClass)
+                        ->getCommand();
+    }
+
+    public function testDirectoryPrefixCommand()
+    {
+        \PHPUnit_Framework_TestCase::setExpectedException('PHPUnit_Framework_Exception');
+
+        $this->container->get('taskWget', ['http://fly.srk.fer.hr/'])
+                        ->directoryPrefix()
+                        ->getCommand();
+    }
+
+    public function testDirectoryPrefixCommandWithString()
+    {
+        verify(
+            $this->container->get('taskWget', ['http://fly.srk.fer.hr/'])
+                            ->directoryPrefix('foo')
+                            ->getCommand()
+        )->equals("wget http://fly.srk.fer.hr/ -P foo");
+    }
+
+    public function testDirectoryPrefixCommandRejectsInt()
+    {
+        \PHPUnit_Framework_TestCase::setExpectedException(
+            'Robo\Exception\TaskException',
+            'Prefix must be a string'
+        );
+
+        $this->container->get('taskWget')
+                        ->directoryPrefix(10)
+                        ->getCommand();
+    }
+
+    public function testDirectoryPrefixCommandRejectsObject()
+    {
+        \PHPUnit_Framework_TestCase::setExpectedException(
+            'Robo\Exception\TaskException',
+            'Prefix must be a string'
+        );
+
+        $this->container->get('taskWget')
+                        ->directoryPrefix(new \StdClass)
+                        ->getCommand();
     }
 }
