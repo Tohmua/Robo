@@ -14,7 +14,7 @@ class MegabytesFileSize implements FileSizeInterface {
             throw new TaskException($this, 'Megabytes must be a number of megabytes');
         }
 
-        $this->megabytes = (int) $megabytes;
+        $this->megabytes = $megabytes;
     }
 
     /**

@@ -14,7 +14,7 @@ class KilobytesFileSize implements FileSizeInterface {
             throw new TaskException($this, 'Kilobytes must be a number of kilobytes');
         }
 
-        $this->kilobytes = (int) $kilobytes;
+        $this->kilobytes = $kilobytes;
     }
 
     /**
