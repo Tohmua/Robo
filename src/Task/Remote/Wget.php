@@ -526,7 +526,7 @@ class Wget extends BaseTask
      *
      * Server support for continued download is required, otherwise --start-pos cannot help.  See -c for details.
      *
-     * @param  mixed $offset
+     * @param  FileSizeInterface $offset
      * @return Wget
      * @throws TaskException
      */
@@ -722,7 +722,7 @@ class Wget extends BaseTask
      * Set the connect timeout to seconds seconds.  TCP connections that take longer to establish will be aborted.  By
      * default, there is no connect timeout, other than that implemented by system libraries.
      *
-     * @param  int $seconds
+     * @param  SecondsTime $seconds
      * @return Wget
      * @throws TaskException
      */
@@ -741,7 +741,7 @@ class Wget extends BaseTask
      * Of course, the remote server may choose to terminate the connection sooner than this option requires.  The
      * default read timeout is 900 seconds.
      *
-     * @param  int $seconds
+     * @param  SecondsTime $seconds
      * @return Wget
      * @throws TaskException
      */
@@ -767,7 +767,7 @@ class Wget extends BaseTask
      * approximately the specified rate.  However, it may take some time for this balance to be achieved, so don't be
      * surprised if limiting the rate doesn't work well with very small files.
      *
-     * @param  mixed $ammount
+     * @param  FileSizeInterface $ammount
      * @return Wget
      * @throws TaskException
      */
