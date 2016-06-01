@@ -22,13 +22,6 @@ class DaysTimeTest extends \Codeception\TestCase\Test
         )->equals(true);
     }
 
-    public function testDaysTimeWithNoParam()
-    {
-        \PHPUnit_Framework_TestCase::setExpectedException('PHPUnit_Framework_Exception');
-
-        $bytes = new DaysTime();
-    }
-
     public function testDaysTimeWithInt()
     {
         $bytes = new DaysTime(10);

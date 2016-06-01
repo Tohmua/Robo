@@ -22,13 +22,6 @@ class MegabytesFileSizeTest extends \Codeception\TestCase\Test
         )->equals(true);
     }
 
-    public function testMegabytesFileSizeWithNoParam()
-    {
-        \PHPUnit_Framework_TestCase::setExpectedException('PHPUnit_Framework_Exception');
-
-        $bytes = new MegabytesFileSize();
-    }
-
     public function testMegabytesFileSizeWithInt()
     {
         $bytes = new MegabytesFileSize(10);

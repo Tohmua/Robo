@@ -22,13 +22,6 @@ class HoursTimeTest extends \Codeception\TestCase\Test
         )->equals(true);
     }
 
-    public function testHoursTimeWithNoParam()
-    {
-        \PHPUnit_Framework_TestCase::setExpectedException('PHPUnit_Framework_Exception');
-
-        $bytes = new HoursTime();
-    }
-
     public function testHoursTimeWithInt()
     {
         $bytes = new HoursTime(10);

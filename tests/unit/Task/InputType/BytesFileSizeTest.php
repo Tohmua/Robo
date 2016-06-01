@@ -22,13 +22,6 @@ class BytesFileSizeTest extends \Codeception\TestCase\Test
         )->equals(true);
     }
 
-    public function testBytesFileSizeWithNoParam()
-    {
-        \PHPUnit_Framework_TestCase::setExpectedException('PHPUnit_Framework_Exception');
-
-        $bytes = new BytesFileSize();
-    }
-
     public function testBytesFileSizeWithInt()
     {
         $bytes = new BytesFileSize(10);
